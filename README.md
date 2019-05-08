@@ -48,7 +48,7 @@ The following table gives you the mapping between instruments and sounds. Please
 * The auditor should include a TCP server and accept connection requests on port 2205.
 * After accepting a connection request, the auditor must send a JSON payload containing the list of <u>active</u> musicians, with the following format (it can be a single line, without indentation):
 
-```
+```json
 [
   {
   	"uuid" : "aa7d8cb3-a15f-4f06-a0eb-b8feb6244a60",
@@ -105,15 +105,15 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | --- | --- |
 |Question | How can we represent the system in an **architecture diagram**, which gives information both about the Docker containers, the communication protocols and the commands? |
-| | *Insert your diagram here...* |
+| | ![](/home/baribal/ownCloud/HEIG/Semestre_IV/RES/Laboratoire/Teaching-HEIGVD-RES-2019-Labo-Orchestra/images/Schéma/Architecture Diagram.png) |
 |Question | Who is going to **send UDP datagrams** and **when**? |
-| | *Enter your response here...* |
+| | Musician is going to send UDP datagrams every 500 ms (1/2 second) |
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
-| | *Enter your response here...* |
+| | Auditor is going to listen for UDP datagrams. He should detect which instrument musician is playing and listen to him for 5 seconds before put him in active musician list. |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | *Enter your response here...* |
+| | Only sounds produced by instrument player |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
-| | *Enter your response here...* |
+| | We need a message encapsulated in JSON. We need to send payload containing this JSON, and receive this same payload. Update message, payload and Datagram every 500 ms (1/2 second). We need to query these data structures when data has to be send or is received. |
 
 
 ## Task 2: implement a "musician" Node.js application
@@ -121,21 +121,21 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | In a JavaScript program, if we have an object, how can we **serialize it in JSON**? |
-| | *Enter your response here...*  |
+| | With JSON library : var payload = JSON.stringify(<your message>); |
 |Question | What is **npm**?  |
-| | *Enter your response here...*  |
+| | npm is a package manager for the JavaScript programming language. It is the default package manager for the JavaScript runtime environment Node.js |
 |Question | What is the `npm install` command and what is the purpose of the `--save` flag?  |
-| | *Enter your response here...*  |
+| | npm install is for adding library to our project and --save permit to save the dependency in the package.JSON for future use. When you clone a Node.js project you can download and install all needed dependencies thanks to package.json. |
 |Question | How can we use the `https://www.npmjs.com/` web site?  |
-| | *Enter your response here...*  |
+| | We use it to found the right package for our project.        |
 |Question | In JavaScript, how can we **generate a UUID** compliant with RFC4122? |
-| | *Enter your response here...*  |
+| | 1. install uuid lib : npm install uuid 2. import uuid lib : const uuidv3 = require('uuid/v3'); 3. generate uuid from everything you want. |
 |Question | In Node.js, how can we execute a function on a **periodic** basis? |
-| | *Enter your response here...*  |
+| | With a function : setInterval(this.update.bind(this), 500); |
 |Question | In Node.js, how can we **emit UDP datagrams**? |
-| | *Enter your response here...*  |
+| | thanks to dgram library : const dgram = require('dgram');  const s = dgram.createSocket('udp4'); s.bind(protocol.PROTOCOL_PORT, function() {console.log("Joining multicast group"); s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS);}); |
 |Question | In Node.js, how can we **access the command line arguments**? |
-| | *Enter your response here...*  |
+| | with take argv[x], where x is the argument wanted |
 
 
 ## Task 3: package the "musician" app in a Docker image
@@ -143,17 +143,17 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | How do we **define and build our own Docker image**?|
-| | *Enter your response here...*  |
+| | With a Docker file.  # Build the Docker image locally $ docker build --tag orchestra-auditor . |
 |Question | How can we use the `ENTRYPOINT` statement in our Dockerfile?  |
-| | *Enter your response here...*  |
+| | Entrypoint sets the command and parameters that will be executed first when a container is run.  Any command line arguments passed to `docker run <image>` will be appended to the entrypoint command, and will override all elements specified using `CMD`. For example, `docker run <image> bash` will add the command argument `bash` to the end of the entrypoint. |
 |Question | After building our Docker image, how do we use it to **run containers**?  |
-| | *Enter your response here...*  |
+| | `docker run --rm orchestra-musician flute`                   |
 |Question | How do we get the list of all **running containers**?  |
-| | *Enter your response here...*  |
+| | docker ps |
 |Question | How do we **stop/kill** one running container?  |
-| | *Enter your response here...*  |
+| | docker stop \<container name or uuid \> |
 |Question | How can we check that our running containers are effectively sending UDP datagrams?  |
-| | *Enter your response here...*  |
+| | tcpdump in the docker shell |
 
 
 ## Task 4: implement an "auditor" Node.js application
@@ -161,7 +161,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | ---  |
 |Question | With Node.js, how can we listen for UDP datagrams in a multicast group? |
-| | *Enter your response here...*  |
+| | We have to join the wanted multicast group : const s = dgram.createSocket('udp4'); s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS); |
 |Question | How can we use the `Map` built-in object introduced in ECMAScript 6 to implement a **dictionary**?  |
 | | *Enter your response here...* |
 |Question | How can we use the `Moment.js` npm module to help us with **date manipulations** and formatting?  |
@@ -177,7 +177,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | How do we validate that the whole system works, once we have built our Docker image? |
-| | *Enter your response here...* |
+| | We check the log of the docker, or we run the docker not in daemon |
 
 
 ## Constraints
