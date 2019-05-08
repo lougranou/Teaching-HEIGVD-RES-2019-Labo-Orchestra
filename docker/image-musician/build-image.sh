@@ -1,17 +1,16 @@
 #!/bin/bash
 
 # Copy the executable jar files in the current directory
-scp ../../src/ .
-
-echo "copy successful !"
+if scp -r ../../src/ .
+then echo "copy successful !"
+fi
 
 # Build the Docker image locally
-docker build --tag orchestra-musician .
+if docker build --tag orchestra-musician .
+then echo "docker image built successfully !"
+fi
 
-echo "docker image built successfully !"
-
-# the executable jar files in the current directory 
-rm -rf ../../src/
-
-
-echo "cleaning directory done"
+# Copy the executable jar files in the current directory
+if rm -rf src/
+then echo "cleaning successful !"
+fi
