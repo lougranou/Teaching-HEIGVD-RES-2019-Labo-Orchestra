@@ -21,6 +21,32 @@ const dgram = require('dgram');
 const protocol = require('./musician-protocol');
 const protocolInstrument = require('./instrument-protocol');
 
+function correspondingSound(instrument) {
+  let ret = '';
+  switch (instrument) {
+    case protocolInstrument.PIANO:
+      ret = protocolInstrument.PIANO_SOUND;
+      break;
+    case protocolInstrument.TRUMPET:
+      ret = protocolInstrument.TRUMPET_SOUND;
+      break;
+    case protocolInstrument.FLUTE:
+      ret = protocolInstrument.FLUTE_SOUND;
+      break;
+    case protocolInstrument.VIOLIN:
+      ret = protocolInstrument.VIOLIN_SOUND;
+      break;
+    case protocolInstrument.DRUM:
+      ret = protocolInstrument.DRUM_SOUND;
+      break;
+
+    default:
+      ret = protocolInstrument.UNKNOWN_SOUND;
+      break;
+  }
+  return ret;
+}
+
 /*
  * Let's create a datagram socket. We will use it to send our UDP datagrams 
  */
@@ -59,39 +85,12 @@ function Musician(instrumentName) {
         console.log(`Sending payload: ${payload} via port ${s.address().port}`);
       });
   };
-  
+
   /*
 * Let's take and send a measure every 500 ms
 */
   setInterval(this.update.bind(this), 500);
 }
-
-// eslint-disable-next-line func-names
-function correspondingSound (instrument) {
-  let ret = '';
-  switch (instrument) {
-    case protocolInstrument.PIANO:
-      ret = protocolInstrument.PIANO_SOUND;
-      break;
-    case protocolInstrument.TRUMPET:
-      ret = protocolInstrument.TRUMPET_SOUND;
-      break;
-    case protocolInstrument.FLUTE:
-      ret = protocolInstrument.FLUTE_SOUND;
-      break;
-    case protocolInstrument.VIOLIN:
-      ret = protocolInstrument.VIOLIN_SOUND;
-      break;
-    case protocolInstrument.DRUM:
-      ret = protocolInstrument.DRUM_SOUND;
-      break;
-
-    default:
-      ret = protocolInstrument.UNKNOWN_SOUND;
-      break;
-  }
-  return ret;
-};
 
 /*
  * Let's get the musician properties from the command line attributes
