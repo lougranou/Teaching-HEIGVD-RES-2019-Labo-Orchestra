@@ -131,7 +131,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | In JavaScript, how can we **generate a UUID** compliant with RFC4122? |
 | | 1. install uuid lib : npm install uuid 2. import uuid lib : const uuidv3 = require('uuid/v3'); 3. generate uuid from everything you want. |
 |Question | In Node.js, how can we execute a function on a **periodic** basis? |
-| | With a function : setInterval(this.update.bind(this), 500); |
+| | With a function : setInterval(this.update.bind(this), 1000); |
 |Question | In Node.js, how can we **emit UDP datagrams**? |
 | | thanks to dgram library : const dgram = require('dgram');  const s = dgram.createSocket('udp4'); s.bind(protocol.PROTOCOL_PORT, function() {console.log("Joining multicast group"); s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS);}); |
 |Question | In Node.js, how can we **access the command line arguments**? |
