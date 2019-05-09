@@ -9,8 +9,3 @@ fi
 if docker build --tag orchestra-musician .
 then echo "docker image built successfully !"
 fi
-
-# Copy the executable jar files in the current directory
-if rm -rf src/
-then echo "cleaning successful !"
-fi
