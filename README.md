@@ -111,9 +111,9 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
 | | Auditor is going to listen for UDP datagrams. He should detect which instrument musician is playing and listen to him for 5 seconds before put him in active musician list. |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | Only sounds produced by instrument player |
+| | Unique uuid of the musician and sounds produced by instrument player |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
-| | We need a message encapsulated in JSON. We need to send payload containing this JSON, and receive this same payload. Update message, payload and Datagram every 500 ms (1/2 second). We need to query these data structures when data has to be send or is received. |
+| | second. We need to query these data structures when data has to be send or is received. |
 
 
 ## Task 2: implement a "musician" Node.js application
@@ -163,13 +163,13 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | With Node.js, how can we listen for UDP datagrams in a multicast group? |
 | | We have to join the wanted multicast group : const s = dgram.createSocket('udp4'); s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS); |
 |Question | How can we use the `Map` built-in object introduced in ECMAScript 6 to implement a **dictionary**?  |
-| | *Enter your response here...* |
+| | We use it to map an unique uuid with a musician. It become really easy to find if a musician has already played |
 |Question | How can we use the `Moment.js` npm module to help us with **date manipulations** and formatting?  |
-| | *Enter your response here...* |
+| | We use it to set a timer. We add musician to our list and if he did not play since 5 seconds we remove him. We use setTimeout and clearTimeout |
 |Question | When and how do we **get rid of inactive players**?  |
-| | *Enter your response here...* |
+| | With a callback passed to the setTimeout which permit to delete a musician knowing its uuid |
 |Question | How do I implement a **simple TCP server** in Node.js?  |
-| | *Enter your response here...* |
+| | With net.createServer(<function>).listen(<port_number>)      |
 
 
 ## Task 5: package the "auditor" app in a Docker image
@@ -177,7 +177,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | How do we validate that the whole system works, once we have built our Docker image? |
-| | We check the log of the docker, or we run the docker not in daemon |
+| | We check all musician docker to be sur they play and we check auditor to verify if he heard about everybody --> the log of the docker, or we run the docker not in daemon |
 
 
 ## Constraints
