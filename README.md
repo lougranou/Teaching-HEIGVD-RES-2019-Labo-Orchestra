@@ -105,15 +105,15 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | --- | --- |
 |Question | How can we represent the system in an **architecture diagram**, which gives information both about the Docker containers, the communication protocols and the commands? |
-| | ![](/home/baribal/ownCloud/HEIG/Semestre_IV/RES/Laboratoire/Teaching-HEIGVD-RES-2019-Labo-Orchestra/images/Schéma/Architecture Diagram.png) |
+| | ![](images/Schéma/Architecture Diagram.png) |
 |Question | Who is going to **send UDP datagrams** and **when**? |
-| | Musician is going to send UDP datagrams every 500 ms (1/2 second) |
+| | Musician is going to send UDP datagrams every second |
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
 | | Auditor is going to listen for UDP datagrams. He should detect which instrument musician is playing and listen to him for 5 seconds before put him in active musician list. |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | Unique uuid of the musician and sounds produced by instrument player |
+| | Uniq uuid of the musician and sounds produced by instrument player |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
-| | second. We need to query these data structures when data has to be send or is received. |
+| | JSON data structures. We need to query these data structures when data has to be send or is received. |
 
 
 ## Task 2: implement a "musician" Node.js application
@@ -135,7 +135,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | In Node.js, how can we **emit UDP datagrams**? |
 | | thanks to dgram library : const dgram = require('dgram');  const s = dgram.createSocket('udp4'); s.bind(protocol.PROTOCOL_PORT, function() {console.log("Joining multicast group"); s.addMembership(protocol.PROTOCOL_MULTICAST_ADDRESS);}); |
 |Question | In Node.js, how can we **access the command line arguments**? |
-| | with take argv[x], where x is the argument wanted |
+| | with take argv[x], where x is the argument wanted.  For docker it is `ENTRYPOINT` |
 
 
 ## Task 3: package the "musician" app in a Docker image
